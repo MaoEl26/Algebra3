@@ -1,5 +1,6 @@
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 
 /**
@@ -30,6 +31,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Transformaciones Lineales en 3D");
         dibujoBaseGris = new Dibujar();
+        
         PuntosU = new ArrayList<>();
         PuntosV = new ArrayList<>();
         PuntosW = new ArrayList<>();
@@ -273,6 +275,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         //PuntosW.add(50.0);
         //dibujoBaseGris.setPuntos(PuntosU, PuntosV, PuntosW);
         VisualizacionArea.setLayout(new java.awt.BorderLayout());
+        dibujoBaseGris.Color(Color.BLUE);
         VisualizacionArea.add(dibujoBaseGris, BorderLayout.CENTER);
         VisualizacionArea.validate();
         

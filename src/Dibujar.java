@@ -23,8 +23,9 @@ public class Dibujar extends JComponent{
         private Shape drawLine1;
         private Shape drawLine2;
         private int value;
-        int baseX = 315;
-        int baseY = 180;
+        private int baseX = 315;
+        private int baseY = 180;
+        private Color color = Color.gray;
         @Override
         public void paint(Graphics g){
             
@@ -35,20 +36,19 @@ public class Dibujar extends JComponent{
             graph2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
            
             //dibuja una linea W                //x  , y , x 315, y 50
-            drawLine  = new Line2D.Double(315,180,-12*PuntosW.get(0)+baseX,-12*PuntosW.get(1)+baseY);
+            drawLine  = new Line2D.Double(315,180,-30*PuntosW.get(0)+baseX,-30*PuntosW.get(1)+baseY);
                                                 //       315-150=165
             //dibuja una linea U               //x  , y , x 185, y 250
-            drawLine1 = new Line2D.Double(315,180,12*PuntosU.get(0)+baseX,-12*PuntosU.get(1)+baseY);
+            drawLine1 = new Line2D.Double(315,180,30*PuntosU.get(0)+baseX,-30*PuntosU.get(1)+baseY);
             
                                                //       250+165 = 150         
             //dibuja una linea V               //x  , y , x 445, y 250
-            drawLine2 = new Line2D.Double(315,180,12*PuntosV.get(0)+baseX,-12*PuntosV.get(1)+baseY);
+            drawLine2 = new Line2D.Double(315,180,30*PuntosV.get(0)+baseX,-30*PuntosV.get(1)+baseY);
             
             //selecciona el color que quiere pintar
-            graph2.setPaint(Color.gray );
+            graph2.setPaint(color);
          
             //dibuja todas las lineas de w,y,z
-            
             graph2.draw(drawLine);
             
             graph2.draw(drawLine1);
@@ -62,6 +62,9 @@ public class Dibujar extends JComponent{
             PuntosU = pPuntosU;
             PuntosV = pPuntosV;
             PuntosW = pPuntosW;
+        }
+        public void Color(Color color){
+            this.color = color;
         }
         
 }
