@@ -283,6 +283,26 @@ public class Algebra3GUI extends javax.swing.JFrame {
         return true;
     }
     
+    private void separaVectores(String textoBase[]){
+        String baseUString[] = textoBase[0].split(",");
+        String baseVString[] = textoBase[1].split(",");
+        String baseWString[] = textoBase[2].split(",");;
+        baseUString[0] = baseUString[0].replace("(", "");
+        baseUString[2] = baseUString[2].replace(")", "");
+        baseVString[0] = baseVString[0].replace("(", "");
+        baseVString[2] = baseVString[2].replace(")", "");
+        baseWString[0] = baseWString[0].replace("(", "");
+        baseWString[2] = baseWString[2].replace(")", "");
+        
+        for(int i=0;i<baseUString.length;i++){
+        baseW.add(Double.parseDouble(baseWString[i]));
+        baseU.add(Double.parseDouble(baseUString[i]));
+        baseV.add(Double.parseDouble(baseVString[i]));
+        }
+        
+        System.out.println(baseU.size());
+    }
+    
     private void PuntosPTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PuntosPTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PuntosPTextActionPerformed
@@ -300,20 +320,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private void BaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BaseButtonActionPerformed
         // TODO add your handling code here:
         String textoBase[];
-        String baseUString[];
-        String baseVString[];
-        String baseWString[];
         textoBase = BasePuntosText.getText().split(";");
-        baseUString = textoBase[0].split(",");
-        baseVString = textoBase[1].split(",");
-        baseWString = textoBase[2].split(",");
-        baseUString[0] = baseUString[0].replace("(", "");
-        baseUString[2] = baseUString[2].replace(")", "");
-        baseVString[0] = baseVString[0].replace("(", "");
-        baseVString[2] = baseVString[2].replace(")", "");
-        baseWString[0] = baseWString[0].replace("(", "");
-        baseWString[2] = baseWString[2].replace(")", "");
-        BasePuntosText.setText(baseUString[0]);
+        separaVectores(textoBase);
+        BasePuntosText.setText(baseU.get(0).toString());
         
     }//GEN-LAST:event_BaseButtonActionPerformed
 
