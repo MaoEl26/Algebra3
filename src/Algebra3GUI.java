@@ -25,6 +25,8 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private ArrayList<Double> PuntosY;
     private ArrayList<Double> PuntosZ;
     
+    int valorAngulo=0;
+    
     private Dibujar dibujoBaseGris;
     private Dibujar dibujoBaseVectores;
     private Dibujar dibujoBaseP;
@@ -318,11 +320,32 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private void CambioPuntosZScrollAdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_CambioPuntosZScrollAdjustmentValueChanged
         // TODO add your handling code here:
         //Obtiene el valor actual del scroll
-        int valorAngulo = CambioPuntosZScroll.getValue();
-        //Genera los valores de la Rotacion 
-        baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),valorAngulo);
-        baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),valorAngulo);
-        baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),valorAngulo);
+        int temporal = CambioPuntosZScroll.getValue();
+        
+        //Valida si el valor actual es menor que el valor anterior 
+        if (temporal > valorAngulo) {
+            //Giro en sentido del reloj
+            //Se actualiza el valor del angulo 
+            valorAngulo = CambioPuntosZScroll.getValue();
+            //Genera los valores de la Rotacion
+            baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),valorAngulo);
+            baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),valorAngulo);
+            baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),valorAngulo);
+
+        }else{
+            //Giro en contra del sentido del reloj
+            //Se actualiza el valor de la Rotacion
+            valorAngulo = CambioPuntosZScroll.getValue();
+            //Genera los valores de la Rotacion
+            baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),-valorAngulo);
+            baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),-valorAngulo);
+            baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),-valorAngulo);
+        }
+        //valorAngulo = CambioPuntosZScroll.getValue();
+         
+        //baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),valorAngulo);
+        //baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),valorAngulo);
+        //baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),valorAngulo);
         
         //Genera los valores de las coordenas X,Y correspondientes
         PuntosX = Iso(baseX.get(0), baseX.get(1), baseX.get(2));

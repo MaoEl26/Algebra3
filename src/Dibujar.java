@@ -40,11 +40,10 @@ public class Dibujar extends JComponent{
                                                 //       315-150=165
             //dibuja una linea U               //x  , y , x 185, y 250
             drawLine1 = new Line2D.Double(315,180,escalar*PuntosU.get(0)+baseX,-escalar*PuntosU.get(1)+baseY);
-            
                                                //       250+165 = 150         
             //dibuja una linea V               //x  , y , x 445, y 250
             drawLine2 = new Line2D.Double(315,180,escalar*PuntosV.get(0)+baseX,-escalar*PuntosV.get(1)+baseY);
-            
+                
             //selecciona el color que quiere pintar
             graph2.setPaint(color);
          
@@ -70,6 +69,5 @@ public class Dibujar extends JComponent{
         public void setEscalar(int escalar){
             this.escalar = escalar;
         }
-        
 }
 
