@@ -17,6 +17,12 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private ArrayList<Double> baseU;
     private ArrayList<Double> baseV;
     private ArrayList<Double> baseW;
+    private ArrayList<Double> baseX;
+    private ArrayList<Double> baseY;
+    private ArrayList<Double> baseZ;
+    private ArrayList<Double> PuntosX;
+    private ArrayList<Double> PuntosY;
+    private ArrayList<Double> PuntosZ;
     
     private Dibujar dibujoBaseGris;
     
@@ -24,13 +30,32 @@ public class Algebra3GUI extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Transformaciones Lineales en 3D");
         dibujoBaseGris = new Dibujar();
-        
         PuntosU = new ArrayList<>();
         PuntosV = new ArrayList<>();
         PuntosW = new ArrayList<>();
         baseU = new ArrayList<>();
         baseV = new ArrayList<>();
         baseW = new ArrayList<>();
+        baseX = new ArrayList<>();
+        baseY = new ArrayList<>();
+        baseZ = new ArrayList<>();
+        baseX.add(5.0);
+        baseX.add(0.0);
+        baseX.add(0.0);
+        baseY.add(0.0);
+        baseY.add(5.0);
+        baseY.add(0.0);
+        baseZ.add(0.0);
+        baseZ.add(0.0);
+        baseZ.add(5.0);
+        PuntosX = Iso(baseX.get(0), baseX.get(1), baseX.get(2));
+        PuntosY = Iso(baseY.get(0), baseY.get(1), baseY.get(2));
+        PuntosZ = Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2));
+        dibujoBaseGris.setPuntos(PuntosX, PuntosY, PuntosZ);
+        System.out.println(PuntosZ.toString());
+        //VisualizacionArea.setLayout(new java.awt.BorderLayout());
+        //VisualizacionArea.add(dibujoBaseGris, BorderLayout.CENTER);
+        //VisualizacionArea.validate();
     }
     
     @SuppressWarnings("unchecked")
@@ -210,7 +235,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         return listaPuntos;
     }
     
-    private ArrayList<Double> Iso(int pPuntoX,double pPuntoY,double pPuntoZ, double angulo){
+    private ArrayList<Double> Iso(double pPuntoX,double pPuntoY,double pPuntoZ, double angulo){
         ArrayList<Double> listaPuntos = new ArrayList<>();
         double xRota = (Math.cos(Math.toRadians(angulo))*pPuntoX)+
                 (-1*Math.sin(Math.toRadians(angulo))*pPuntoY);
@@ -237,18 +262,18 @@ public class Algebra3GUI extends javax.swing.JFrame {
 
     private void PuntoPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PuntoPButtonActionPerformed
         // TODO add your handling code here:
-        ArrayList<Double> PuntosU = new ArrayList<>();
-        ArrayList<Double> PuntosV = new ArrayList<>();
-        ArrayList<Double> PuntosW = new ArrayList<>();
-        PuntosU.add(185.0);
-        PuntosU.add(250.0);
-        PuntosV.add(445.0);
-        PuntosV.add(250.0);
-        PuntosW.add(315.0);
-        PuntosW.add(50.0);
-        dibujo.setPuntos(PuntosU, PuntosV, PuntosW);
+        //ArrayList<Double> PuntosU = new ArrayList<>();
+        //ArrayList<Double> PuntosV = new ArrayList<>();
+        //ArrayList<Double> PuntosW = new ArrayList<>();
+        //PuntosU.add(185.0);
+        //PuntosU.add(250.0);
+        //PuntosV.add(445.0);
+        //PuntosV.add(250.0);
+        //PuntosW.add(315.0);
+        //PuntosW.add(50.0);
+        //dibujoBaseGris.setPuntos(PuntosU, PuntosV, PuntosW);
         VisualizacionArea.setLayout(new java.awt.BorderLayout());
-        VisualizacionArea.add(dibujo, BorderLayout.CENTER);
+        VisualizacionArea.add(dibujoBaseGris, BorderLayout.CENTER);
         VisualizacionArea.validate();
         
         
@@ -277,7 +302,15 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private void CambioPuntosZScrollAdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_CambioPuntosZScrollAdjustmentValueChanged
         // TODO add your handling code here:
         BasePuntosText.setText(Integer.toString(CambioPuntosZScroll.getValue()));
-        dibujo.rota(CambioPuntosZScroll.getValue());
+        int valorAngulo = CambioPuntosZScroll.getValue();
+        baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),valorAngulo);
+        baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),valorAngulo);
+        baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),valorAngulo);
+        PuntosX = Iso(baseX.get(0), baseX.get(1), baseX.get(2));
+        PuntosY = Iso(baseY.get(0), baseY.get(1), baseY.get(2));
+        PuntosZ = Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2));
+        dibujoBaseGris.setPuntos(PuntosX, PuntosY, PuntosZ);
+        dibujoBaseGris.repaint();
     }//GEN-LAST:event_CambioPuntosZScrollAdjustmentValueChanged
 
     /**
