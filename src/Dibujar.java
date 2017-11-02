@@ -23,9 +23,10 @@ public class Dibujar extends JComponent{
         private Shape drawLine1;
         private Shape drawLine2;
         private int escalar = 30;
-        private int baseX = 315;
-        private int baseY = 180;
+        private final int baseX = 315;
+        private final int baseY = 180;
         private Color color = Color.gray;
+        private boolean dibujaRectangulo = false;
         @Override
         public void paint(Graphics g){
             
@@ -54,6 +55,29 @@ public class Dibujar extends JComponent{
             
             graph2.draw(drawLine2);
             
+            
+            if (dibujaRectangulo){
+                
+            drawLine  = new Line2D.Double(310,184,340,200);
+                                                //       315-150=165
+            //dibuja una linea U               //x  , y , x 185, y 250
+            drawLine1 = new Line2D.Double(350,197,341,200);
+            
+            drawLine2 = new Line2D.Double(340,100,340,200);
+            
+           
+            graph2.setPaint(color.ORANGE);
+            
+            graph2.draw(drawLine);
+            
+            graph2.draw(drawLine1);
+            
+            graph2.draw(drawLine2);
+            
+            graph2.setPaint(color.red);
+            
+            graph2.fillOval(338, 90, 5, 5);
+            }
         }
         
         public void setPuntos(ArrayList<Double> pPuntosU,
@@ -68,6 +92,10 @@ public class Dibujar extends JComponent{
         
         public void setEscalar(int escalar){
             this.escalar = escalar;
+        }
+        
+        public void setDibujaRectagulo(boolean dibujaRectangulo){
+            this.dibujaRectangulo = dibujaRectangulo;
         }
 }
 

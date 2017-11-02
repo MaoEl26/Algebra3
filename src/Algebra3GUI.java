@@ -12,12 +12,17 @@ public class Algebra3GUI extends javax.swing.JFrame {
      * Creates new form Algebra3GUI
      */
     
+    
+    
+    //Arreglos para el uso de los vectores
     private ArrayList<Double> PuntosU;
     private ArrayList<Double> PuntosV;
     private ArrayList<Double> PuntosW;
     private ArrayList<Double> baseU;
     private ArrayList<Double> baseV;
     private ArrayList<Double> baseW;
+    
+    //Arreglos para la base gris y puntos en R2 
     private ArrayList<Double> baseX;
     private ArrayList<Double> baseY;
     private ArrayList<Double> baseZ;
@@ -25,8 +30,10 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private ArrayList<Double> PuntosY;
     private ArrayList<Double> PuntosZ;
     
+    //Valor para el uso del angulo
     int valorAngulo=0;
     
+    //Objetos para el dibujo de las lineas de los vectores
     private Dibujar dibujoBaseGris;
     private Dibujar dibujoBaseVectores;
     private Dibujar dibujoBaseP;
@@ -34,9 +41,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     public Algebra3GUI() {
         initComponents();
         this.setTitle("Transformaciones Lineales en 3D");
-        inicializa();
-        //cargaInicio();
-        
+        inicializa();        
     }
     
     @SuppressWarnings("unchecked")
@@ -210,9 +215,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private void cargaInicio(){
         //Genera el dibujo base color gris de la gráfica
         VisualizacionArea.setLayout(new java.awt.BorderLayout());
-        VisualizacionArea.removeAll();
-        VisualizacionArea.add(dibujoBaseGris, BorderLayout.CENTER);
-        VisualizacionArea.validate();
+        //VisualizacionArea.removeAll();
+        //VisualizacionArea.add(dibujoBaseGris, BorderLayout.CENTER);
+        //VisualizacionArea.validate();
 }
              
     private void inicializa(){
@@ -226,7 +231,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         dibujoBaseP.Color(Color.BLUE);
         
         //Modifica el largo que debe tener para la correcta visualizacion
-        dibujoBaseVectores.setEscalar(15);
+        dibujoBaseVectores.setEscalar(30);
         
         //Inicializa las listas a utilizar para calculos posteriores
         PuntosU = new ArrayList<>();
@@ -286,7 +291,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private void separaVectores(String textoBase[]){
         String baseUString[] = textoBase[0].split(",");
         String baseVString[] = textoBase[1].split(",");
-        String baseWString[] = textoBase[2].split(",");;
+        String baseWString[] = textoBase[2].split(",");
         baseUString[0] = baseUString[0].replace("(", "");
         baseUString[2] = baseUString[2].replace(")", "");
         baseVString[0] = baseVString[0].replace("(", "");
@@ -299,9 +304,40 @@ public class Algebra3GUI extends javax.swing.JFrame {
         baseU.add(Double.parseDouble(baseUString[i]));
         baseV.add(Double.parseDouble(baseVString[i]));
         }
-        
-        System.out.println(baseU.size());
     }
+    
+    private void separaP(String textoP[]){
+        
+    }
+    
+    //Vectores de la Base
+    private void setValoresISOVectores(){
+        PuntosU = Iso(baseU.get(0), baseU.get(1), baseU.get(2));
+        PuntosV = Iso(baseV.get(0), baseV.get(1), baseV.get(2));
+        PuntosW = Iso(baseW.get(0), baseW.get(1), baseW.get(2));
+    }
+    
+    //Vectores de la base cambio angulo
+    private void setValoresISOVectoresCambioAngulo(double angulo){
+        baseU = Iso(baseU.get(0), baseU.get(1), baseU.get(2),angulo);
+        baseV = Iso(baseV.get(0), baseV.get(1), baseV.get(2),angulo);
+        baseW = Iso(baseW.get(0), baseW.get(1), baseW.get(2),angulo);
+    }
+    
+    //Vectores base gris
+    private void setVectoresBase(){
+        PuntosX = Iso(baseX.get(0), baseX.get(1), baseX.get(2));
+        PuntosY = Iso(baseY.get(0), baseY.get(1), baseY.get(2));
+        PuntosZ = Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2));
+    }
+    
+    //Vectores base gris cambio angulo
+    private void setVectoresBaseCambioAngulo(double angulo){
+        baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),angulo);
+        baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),angulo);
+        baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),angulo);
+    }
+    
     
     private void PuntosPTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PuntosPTextActionPerformed
         // TODO add your handling code here:
@@ -322,12 +358,15 @@ public class Algebra3GUI extends javax.swing.JFrame {
         String textoBase[];
         textoBase = BasePuntosText.getText().split(";");
         separaVectores(textoBase);
-        BasePuntosText.setText(baseU.get(0).toString());
-        
+        //Condicion L.I
+        setValoresISOVectores();
+        dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
+        VisualizacionArea.add(dibujoBaseVectores, BorderLayout.CENTER);
+        VisualizacionArea.validate();
     }//GEN-LAST:event_BaseButtonActionPerformed
 
     private void CambioPuntosZScrollAdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_CambioPuntosZScrollAdjustmentValueChanged
-        // TODO add your handling code here:
+
         //Obtiene el valor actual del scroll
         int temporal = CambioPuntosZScroll.getValue();
         
@@ -336,34 +375,30 @@ public class Algebra3GUI extends javax.swing.JFrame {
             //Giro en sentido del reloj
             //Se actualiza el valor del angulo 
             valorAngulo = CambioPuntosZScroll.getValue();
+            
             //Genera los valores de la Rotacion
-            baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),valorAngulo);
-            baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),valorAngulo);
-            baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),valorAngulo);
-
+            //setVectoresBaseCambioAngulo(valorAngulo);
+            setValoresISOVectoresCambioAngulo(valorAngulo);
+            
         }else{
             //Giro en contra del sentido del reloj
             //Se actualiza el valor de la Rotacion
             valorAngulo = CambioPuntosZScroll.getValue();
+            
             //Genera los valores de la Rotacion
-            baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),-valorAngulo);
-            baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),-valorAngulo);
-            baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),-valorAngulo);
+            //setVectoresBaseCambioAngulo(-valorAngulo);
+            setValoresISOVectoresCambioAngulo(-valorAngulo);
         }
-        //valorAngulo = CambioPuntosZScroll.getValue();
-         
-        //baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),valorAngulo);
-        //baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),valorAngulo);
-        //baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),valorAngulo);
         
         //Genera los valores de las coordenas X,Y correspondientes
-        PuntosX = Iso(baseX.get(0), baseX.get(1), baseX.get(2));
-        PuntosY = Iso(baseY.get(0), baseY.get(1), baseY.get(2));
-        PuntosZ = Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2));
+        //setVectoresBase();
+        setValoresISOVectores();
         
         //Actualiza los puntos a dibujar
-        dibujoBaseGris.setPuntos(PuntosX, PuntosY, PuntosZ);
-        dibujoBaseGris.repaint();
+        dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
+        //dibujoBaseGris.setPuntos(PuntosX, PuntosY, PuntosZ);
+        //dibujoBaseGris.repaint();
+        dibujoBaseVectores.repaint();
     }//GEN-LAST:event_CambioPuntosZScrollAdjustmentValueChanged
 
     /**
