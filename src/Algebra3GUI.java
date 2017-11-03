@@ -22,6 +22,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private ArrayList<Double> baseV;
     private ArrayList<Double> baseW;
     
+    //Arreglos para el dibujo de los paralelogramos 
     private ArrayList<Double> baseP;
     private ArrayList<Double> basePunto;
     private ArrayList<Double> Punto;
@@ -43,7 +44,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
     
     //Valor para el uso del angulo
     private int valorAngulo=0;
+    //Variable para el uso del determinante en varios angulos
     private double valorDeterminante;
+    //Variable para almacenar el texto del label 
     private String texto;
     
     //Objetos para el dibujo de las lineas de los vectores
@@ -193,7 +196,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(BaseButton)
                                         .addGap(8, 8, 8)))
-                                .addGap(31, 31, 31)
+                                .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(NombreLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -211,15 +214,14 @@ public class Algebra3GUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addComponent(NombreLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(NombreLabel2)
-                        .addGap(23, 23, 23))
+                        .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(etiquetaP, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(PuntosPText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +231,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
                             .addComponent(etiquetaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BasePuntosText)
                             .addComponent(BaseButton))
-                        .addGap(31, 31, 31)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(VisualizacionArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(LabelCoordenadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,13 +291,16 @@ public class Algebra3GUI extends javax.swing.JFrame {
         BasePuntoZ = new ArrayList<>();
         basePunto = new ArrayList<>();
         Punto = new ArrayList<>();
+        //Establece el texto base para la representacion en el label
         texto = LabelCoordenadas.getText();
-
+        //Deshabilita todos los botones para evitar errores
         BaseButton.setEnabled(false);
         CambioPuntosZScroll.setEnabled(false);
     }
     
     private void limpiarArreglos(){
+        //Limpia los valores de todos los arreglos para no tener datos basura
+        //en calculos posteriores 
         PuntosU.clear();
         PuntosV.clear();
         PuntosW.clear();
@@ -312,11 +317,12 @@ public class Algebra3GUI extends javax.swing.JFrame {
         BasePuntoX.clear();
         BasePuntoY.clear();
         BasePuntoZ.clear();
-        basePunto.clear();
-        
+        basePunto.clear();    
     }
     
     private void PuntosCentro(){
+        //Establece los puntos centrales para que la grafica no sea visible 
+        //Cuando se cargan el punto central o cuando se inserta una base no L.I
         PuntosVacios.add(0.0);
         PuntosVacios.add(0.0);
         dibujoBaseP.setDibujaFlechas(false);
@@ -349,12 +355,14 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private void reload(){
+        //Llama a los metodos repaint de los objetos para cambiar el diseño
         dibujoBaseGris.repaint();
         dibujoBaseVectores.repaint();
         dibujoBaseP.repaint();
     }
        
     private ArrayList<Double> Iso(double pPuntoX,double pPuntoY, double pPuntoZ){
+        //Calcula el valor isometrico de la puntos para realizar la graficacion 
         ArrayList<Double> listaPuntos  = new ArrayList<>();
         double valorTemporal;
         valorTemporal = pPuntoY-pPuntoX;
@@ -365,6 +373,8 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private ArrayList<Double> Iso(double pPuntoX,double pPuntoY,double pPuntoZ, double angulo){
+        //Calcula el valor de los puntos con el cambio del valor del angulo
+        
         ArrayList<Double> listaPuntos = new ArrayList<>();
         double xRota = (Math.cos(Math.toRadians(angulo))*pPuntoX)+
                 (-1*Math.sin(Math.toRadians(angulo))*pPuntoY);
@@ -377,6 +387,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private double determinante(ArrayList<Double> pU,ArrayList<Double> pV,ArrayList<Double> pW){
+        //Calcula el determinante de una Matriz de 3x3 y devuelve el valor
         double valor;
         double x = pU.get(0);
         double y = pU.get(1);
@@ -395,6 +406,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private void separaVectores(String textoBase[]){
+        //Separa los valores de la Base y los convierte a Double 
+        //para usarse en calculo posteriores
+        //Elimina datos basura
         baseW.clear();
         baseU.clear();
         baseV.clear();
@@ -417,6 +431,8 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private void separaP(String textoP){
+        //Separa los valores de P y los convierte a Double 
+        //para usarse en calculo posteriores
         baseP.clear();
         String basePString[] = textoP.split(",");
         basePString[0] = basePString[0].replace("(", "");
@@ -429,6 +445,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     
     //Vectores de la Base
     private void setValoresISOVectores(){
+        //Establece los valores isometricos para la graficacion 
         PuntosU = Iso(baseU.get(0), baseU.get(1), baseU.get(2));
         PuntosV = Iso(baseV.get(0), baseV.get(1), baseV.get(2));
         PuntosW = Iso(baseW.get(0), baseW.get(1), baseW.get(2));
@@ -436,6 +453,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     
     //Vectores de la base cambio angulo
     private void setValoresISOVectoresCambioAngulo(double angulo){
+        //Establece los valores isometricos con el cambio de angulo 
         baseU = Iso(baseU.get(0), baseU.get(1), baseU.get(2),angulo);
         baseV = Iso(baseV.get(0), baseV.get(1), baseV.get(2),angulo);
         baseW = Iso(baseW.get(0), baseW.get(1), baseW.get(2),angulo);
@@ -443,6 +461,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     
     //Vectores base gris
     private void setVectoresBase(){
+        //Establece los valores isometricos para la graficacion 
         PuntosX = Iso(baseX.get(0), baseX.get(1), baseX.get(2));
         PuntosY = Iso(baseY.get(0), baseY.get(1), baseY.get(2));
         PuntosZ = Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2));
@@ -450,12 +469,14 @@ public class Algebra3GUI extends javax.swing.JFrame {
     
     //Vectores base gris cambio angulo
     private void setVectoresBaseCambioAngulo(double angulo){
+        //Realiza el cambio isometrico con el valor del angulo
         baseX=Iso(baseX.get(0), baseX.get(1), baseX.get(2),angulo);
         baseY=Iso(baseY.get(0), baseY.get(1), baseY.get(2),angulo);
         baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),angulo);
     }
     
     private ArrayList<Double> valoresIncognitas(){
+        //Obtiene el valor de los puntos en la base usando el metodo de crammer
         ArrayList<Double> listaPuntos = new ArrayList<>();
         double determinanteX = determinante(baseP, baseV, baseW);
         double determinanteY = determinante(baseU, baseP, baseW);
@@ -485,6 +506,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private void setIsoParalelogramo(){
+        //Establece los valores isometricos para la graficación
         PuntoX = Iso(BasePuntoX.get(0),BasePuntoX.get(1),BasePuntoX.get(2));
         PuntoY = Iso(BasePuntoY.get(0),BasePuntoY.get(1),BasePuntoY.get(2));
         PuntoZ = Iso(BasePuntoZ.get(0),BasePuntoZ.get(1),BasePuntoZ.get(2));
@@ -492,12 +514,11 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private void setIsoParalelogramo(double angulo){
-        ArrayList<Double> temporal;
+        //Establece los valores isometricos con el cambio del angulo
         BasePuntoX = Iso(BasePuntoX.get(0),BasePuntoX.get(1),BasePuntoX.get(2),angulo);
         BasePuntoY = Iso(BasePuntoY.get(0),BasePuntoY.get(1),BasePuntoY.get(2),angulo);
         BasePuntoZ = Iso(BasePuntoZ.get(0),BasePuntoZ.get(1),BasePuntoZ.get(2),angulo);
-        temporal = Iso(basePunto.get(0),basePunto.get(1),basePunto.get(2),angulo);
-        basePunto.set(0, temporal.get(0));
+        basePunto = Iso(basePunto.get(0),basePunto.get(1),basePunto.get(2),angulo);
     }
     
     private void PuntosPTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PuntosPTextActionPerformed
@@ -517,12 +538,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
        cargaInicio();//Carga los elementos del inicio
        reload();//recarga los dibujos
        separaP(PuntosPText.getText());//Separa y convierte en digitos los valores P
-       BaseButton.setEnabled(true);
-       
+       BaseButton.setEnabled(true);//Habilita el boton de la base para cargar los vectores
     }//GEN-LAST:event_PuntoPButtonActionPerformed
-
-
-    
+   
     private void BaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BaseButtonActionPerformed
         // TODO add your handling code here:
         limpiarArreglos();
@@ -534,31 +552,41 @@ public class Algebra3GUI extends javax.swing.JFrame {
                                                     //de los datos principales
         //Si es diferente de 0 dibuja todas la graficas
         if (valorDeterminante !=0){
+            //Habilita el scrollbar
             CambioPuntosZScroll.setEnabled(true);
+            //Establece el grafico en los valores centrales
             valoresIniciales();
+            //Obtiene los valores isometricos correspondientes
             setValoresISOVectores();
+            //Establece los valores de los puntos correspondientes
             dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
             dibujoBaseP.setPuntos(PuntosU, PuntosV, PuntosW);
-            
-            
+            //Realiza la combinacion lineal
             basePunto=valoresIncognitas();
-            System.out.println(basePunto);
+            //Obtiene los puntos correspondientes del paralelogramo
             puntosParalelogramo();
+            //Obtiene los valores isometricos correspondientes
             setIsoParalelogramo();
+            //Establece los valores corespondientes y booleanos de lo que se va a dibujar
             dibujoBaseVectores.setPuntosRectangulo(PuntoX, PuntoY, PuntoZ, Punto);
             dibujoBaseVectores.setDibujaRectagulo(true);
             dibujoBaseP.setDibujaFlechas(true);
             dibujoBaseVectores.setDibujaFlechas(true);
             LabelCoordenadas.setText(texto+basePunto);
+            //Recarga los dibujos
             reload();
         }else{
+            //Deshabilita el scrollbar
             CambioPuntosZScroll.setEnabled(false);
             //Solo deja la plantilla gris
             LabelCoordenadas.setText("La Base no es L.I.");
+            
+            //Reinicia Todos los puntos 
             limpiarArreglos();
             valoresIniciales();
             PuntosCentro();
             dibujoBaseVectores.setDibujaRectagulo(false);
+            //Recarga los dibujos
             reload();
         }
     }//GEN-LAST:event_BaseButtonActionPerformed
@@ -577,6 +605,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
             //Genera los valores de la Rotacion
             setVectoresBaseCambioAngulo(valorAngulo);
             if((baseU.size()==3) && (valorDeterminante!=0)){
+                
             setValoresISOVectoresCambioAngulo(valorAngulo);
             setIsoParalelogramo(valorAngulo);
            }
