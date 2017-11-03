@@ -293,6 +293,16 @@ public class Bareiss extends javax.swing.JFrame {
             arreglo[i][i] = arreglo[indice][indice];
         }
     }
+    
+    private static int validarDiagonal(int[][] arr) {
+        // TODO verificar que no haya 0 en la diagonal principal
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i][i] == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private static void columnaACeros(int indice) {
         determinante = arreglo[indice][indice];
@@ -343,17 +353,7 @@ public class Bareiss extends javax.swing.JFrame {
             //jTextField32.setText(jTextField32.getText()+ "\n");
             System.out.println();
         }
-    }
-
-    private static int validarDiagonal(int[][] arr) {
-        // TODO verificar que no haya 0 en la diagonal principal
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i][i] == 0) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    }    
 
     private static void intercambiarFilas(int[][] arr) {
         // TODO intercambia renglones hasta que no hay 0os en la diagonal
@@ -370,7 +370,7 @@ public class Bareiss extends javax.swing.JFrame {
         }
     }
     
-        private static void calcularPrimerCuadrante(int indice, int pivAnt) {
+    private static void calcularPrimerCuadrante(int indice, int pivAnt) {
         if (pivAnt==0){
             pivAnt =1;
         }
@@ -683,6 +683,7 @@ public class Bareiss extends javax.swing.JFrame {
         textArea1 = new java.awt.TextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 153));
 
