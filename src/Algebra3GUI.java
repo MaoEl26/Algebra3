@@ -94,7 +94,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         EtiquetaEje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         EtiquetaEje.setText("Rotación Eje Z");
 
-        PuntosPText.setText("(1,2,3)");
+        PuntosPText.setText("(x,y,z)");
         PuntosPText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PuntosPTextActionPerformed(evt);
@@ -112,7 +112,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         etiquetaBase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         etiquetaBase.setText("Base B=");
 
-        BasePuntosText.setText("((1,0,0);(0,1,0);(0,0,1)");
+        BasePuntosText.setText("(U;V;W)");
         BasePuntosText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BasePuntosTextActionPerformed(evt);
@@ -193,9 +193,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(PuntoPButton)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(BaseButton)
-                                        .addGap(8, 8, 8)))
+                                    .addComponent(BaseButton))
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(NombreLabel, javax.swing.GroupLayout.Alignment.TRAILING)
