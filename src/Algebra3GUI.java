@@ -215,9 +215,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private void cargaInicio(){
         //Genera el dibujo base color gris de la gráfica
         VisualizacionArea.setLayout(new java.awt.BorderLayout());
-        //VisualizacionArea.removeAll();
-        //VisualizacionArea.add(dibujoBaseGris, BorderLayout.CENTER);
-        //VisualizacionArea.validate();
+        VisualizacionArea.removeAll();
+        VisualizacionArea.add(dibujoBaseGris, BorderLayout.CENTER);
+        VisualizacionArea.validate();
 }
              
     private void inicializa(){
@@ -284,8 +284,23 @@ public class Algebra3GUI extends javax.swing.JFrame {
         return listaPuntos;
     }
     
-    private boolean isLI(ArrayList<Integer> pbaseU,ArrayList<Integer> pbaseV,ArrayList<Integer> pbaseW){
-        return true;
+    private boolean isLI(ArrayList<Integer> pU,ArrayList<Integer> pV,ArrayList<Integer> pW){
+        double valor;
+        double x = pU.get(0);
+        double y = pU.get(1);
+        double z = pU.get(2);
+        double x1 = pV.get(0);
+        double y1 = pV.get(1);
+        double z1 = pV.get(2);
+        double x2 = pW.get(0); 
+        double y2 = pW.get(1);
+        double z2 = pW.get(2);
+        
+        valor = (x*(y1*z2-z1*y2))-(x1*(y*z2-z*y2))+(x2*(y*z1-z*y1))-(y*(x1*z2-z1*x2))+
+                (y1*(x*z2-z*x2))-(y2*(x*z1-z*x1))+(z*(x1*y2-y1*x2))-(z1*(x*y2-y*x2))+
+                (z2*(x*y1-y*x1));
+        
+        return valor != 0;
     }
     
     private void separaVectores(String textoBase[]){
@@ -377,7 +392,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
             valorAngulo = CambioPuntosZScroll.getValue();
             
             //Genera los valores de la Rotacion
-            //setVectoresBaseCambioAngulo(valorAngulo);
+            setVectoresBaseCambioAngulo(valorAngulo);
             setValoresISOVectoresCambioAngulo(valorAngulo);
             
         }else{
@@ -386,18 +401,18 @@ public class Algebra3GUI extends javax.swing.JFrame {
             valorAngulo = CambioPuntosZScroll.getValue();
             
             //Genera los valores de la Rotacion
-            //setVectoresBaseCambioAngulo(-valorAngulo);
+            setVectoresBaseCambioAngulo(-valorAngulo);
             setValoresISOVectoresCambioAngulo(-valorAngulo);
         }
         
         //Genera los valores de las coordenas X,Y correspondientes
-        //setVectoresBase();
+        setVectoresBase();
         setValoresISOVectores();
         
         //Actualiza los puntos a dibujar
         dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
-        //dibujoBaseGris.setPuntos(PuntosX, PuntosY, PuntosZ);
-        //dibujoBaseGris.repaint();
+        dibujoBaseGris.setPuntos(PuntosX, PuntosY, PuntosZ);
+        dibujoBaseGris.repaint();
         dibujoBaseVectores.repaint();
     }//GEN-LAST:event_CambioPuntosZScrollAdjustmentValueChanged
 
