@@ -266,8 +266,8 @@ public class Algebra3GUI extends javax.swing.JFrame {
         dibujoBaseP.Color(Color.BLUE);
         
         //Modifica el largo que debe tener para la correcta visualizacion
-        dibujoBaseVectores.setEscalar(35);
-        dibujoBaseP.setEscalar(50);
+        dibujoBaseVectores.setEscalar(50);
+        dibujoBaseP.setEscalar(80);
         
         //Inicializa las listas a utilizar para calculos posteriores
         PuntosU = new ArrayList<>();
@@ -289,7 +289,10 @@ public class Algebra3GUI extends javax.swing.JFrame {
         BasePuntoZ = new ArrayList<>();
         basePunto = new ArrayList<>();
         Punto = new ArrayList<>();
-        texto = LabelCoordenadas.getText();        
+        texto = LabelCoordenadas.getText();
+
+        BaseButton.setEnabled(false);
+        CambioPuntosZScroll.setEnabled(false);
     }
     
     private void limpiarArreglos(){
@@ -310,14 +313,16 @@ public class Algebra3GUI extends javax.swing.JFrame {
         BasePuntoY.clear();
         BasePuntoZ.clear();
         basePunto.clear();
+        
     }
     
     private void PuntosCentro(){
         PuntosVacios.add(0.0);
         PuntosVacios.add(0.0);
+        dibujoBaseP.setDibujaFlechas(false);
+        dibujoBaseVectores.setDibujaFlechas(false);
         dibujoBaseVectores.setPuntos(PuntosVacios, PuntosVacios, PuntosVacios);
         dibujoBaseP.setPuntos(PuntosVacios, PuntosVacios, PuntosVacios);
-        reload();
     }
     
     private void valoresIniciales(){
@@ -465,12 +470,15 @@ public class Algebra3GUI extends javax.swing.JFrame {
     }
     
     private void puntosParalelogramo(){
+        //Punto X de la Base
         BasePuntoX.add(basePunto.get(0));
         BasePuntoX.add(0.0);
         BasePuntoX.add(0.0);
+        //Punto Y de la Base
         BasePuntoY.add(0.0);
         BasePuntoY.add(basePunto.get(1));
         BasePuntoY.add(0.0);
+        //Punto Z de la Base Union de las 2 lineas
         BasePuntoZ.add(basePunto.get(0));
         BasePuntoZ.add(basePunto.get(1));
         BasePuntoZ.add(0.0);
@@ -509,6 +517,8 @@ public class Algebra3GUI extends javax.swing.JFrame {
        cargaInicio();//Carga los elementos del inicio
        reload();//recarga los dibujos
        separaP(PuntosPText.getText());//Separa y convierte en digitos los valores P
+       BaseButton.setEnabled(true);
+       
     }//GEN-LAST:event_PuntoPButtonActionPerformed
 
 
@@ -524,6 +534,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
                                                     //de los datos principales
         //Si es diferente de 0 dibuja todas la graficas
         if (valorDeterminante !=0){
+            CambioPuntosZScroll.setEnabled(true);
             valoresIniciales();
             setValoresISOVectores();
             dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
@@ -531,19 +542,23 @@ public class Algebra3GUI extends javax.swing.JFrame {
             
             
             basePunto=valoresIncognitas();
+            System.out.println(basePunto);
             puntosParalelogramo();
             setIsoParalelogramo();
-            dibujoBaseP.setPuntosRectangulo(PuntoX, PuntoY, PuntoZ, Punto);
-            dibujoBaseP.setDibujaRectagulo(true);
+            dibujoBaseVectores.setPuntosRectangulo(PuntoX, PuntoY, PuntoZ, Punto);
+            dibujoBaseVectores.setDibujaRectagulo(true);
+            dibujoBaseP.setDibujaFlechas(true);
+            dibujoBaseVectores.setDibujaFlechas(true);
             LabelCoordenadas.setText(texto+basePunto);
             reload();
         }else{
+            CambioPuntosZScroll.setEnabled(false);
             //Solo deja la plantilla gris
             LabelCoordenadas.setText("La Base no es L.I.");
             limpiarArreglos();
             valoresIniciales();
             PuntosCentro();
-            dibujoBaseP.setDibujaRectagulo(false);
+            dibujoBaseVectores.setDibujaRectagulo(false);
             reload();
         }
     }//GEN-LAST:event_BaseButtonActionPerformed
@@ -584,7 +599,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         setValoresISOVectores();
         setIsoParalelogramo();
         //Actualiza los puntos a dibujar
-        dibujoBaseP.setPuntosRectangulo(PuntoX, PuntoY, PuntoZ, Punto);
+        dibujoBaseVectores.setPuntosRectangulo(PuntoX, PuntoY, PuntoZ, Punto);
         dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
         dibujoBaseP.setPuntos(PuntosU, PuntosV, PuntosW);
         }

@@ -32,6 +32,7 @@ public class Dibujar extends JComponent{
         private final int baseY = 180;
         private Color color = Color.gray;
         private boolean dibujaRectangulo = false;
+        private boolean flechas = true;
         @Override
         public void paint(Graphics g){
             
@@ -41,22 +42,18 @@ public class Dibujar extends JComponent{
             //graficos de la ventana para que tenga "graficas como los juegos"
             graph2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
            
-            //dibuja una linea W                //x  , y , x 315, y 50
+            //dibuja una linea W                
             drawLine  = new Line2D.Double(315,180,-escalar*PuntosW.get(0)+baseX,-escalar*PuntosW.get(1)+baseY);
-                                                //       315-150=165
-            //dibuja una linea U               //x  , y , x 185, y 250
+            
+            
+            //dibuja una linea U               
             drawLine1 = new Line2D.Double(315,180,escalar*PuntosU.get(0)+baseX,-escalar*PuntosU.get(1)+baseY);
-                                               //       250+165 = 150         
-            //dibuja una linea V               //x  , y , x 445, y 250
+                                                  
+            //dibuja una linea V               
             drawLine2 = new Line2D.Double(315,180,escalar*PuntosV.get(0)+baseX,-escalar*PuntosV.get(1)+baseY);
             //selecciona el color que quiere pintar
             graph2.setPaint(color);
          
-            //graph2.drawPolygon(new int[] {245, 250, 255}, new int[] {100, 90, 100}, 3);
-            
-            //graph2.drawPolygon(new int[] {195, 200, 205}, new int[] {255, 245, 250}, 3);
-            
-            //graph2.fillPolygon(new int[] {escalar*PuntosV.get(0)+baseX, 340, 345}, new int[] {222, 215, 224}, 3);
             //dibuja todas las lineas de w,y,z
             graph2.draw(drawLine);
             
@@ -64,7 +61,57 @@ public class Dibujar extends JComponent{
             
             graph2.draw(drawLine2);
             
+            if(flechas){
+            //Flecha Linea eje Z
+            drawLine  = new Line2D.Double(-escalar*PuntosW.get(0)+baseX-5,
+                    -escalar*PuntosW.get(1)+baseY,-escalar*PuntosW.get(0)+baseX+5,
+                    -escalar*PuntosW.get(1)+baseY);
+                         
+            drawLine1 = new Line2D.Double(-escalar*PuntosW.get(0)+baseX-5,
+                    -escalar*PuntosW.get(1)+baseY,escalar*PuntosW.get(0)+baseX,
+                    -escalar*PuntosW.get(1)+baseY-5);
+                                                                
+            drawLine2 = new Line2D.Double(-escalar*PuntosW.get(0)+baseX+5,
+                    -escalar*PuntosW.get(1)+baseY,escalar*PuntosW.get(0)+baseX,
+                    -escalar*PuntosW.get(1)+baseY-5);
+            graph2.draw(drawLine);
+            graph2.draw(drawLine1);
+            graph2.draw(drawLine2);
             
+            //Flecha Linea eje X
+            drawLine  = new Line2D.Double(escalar*PuntosU.get(0)+baseX-5,
+                    -escalar*PuntosU.get(1)+baseY,escalar*PuntosU.get(0)+baseX+5,
+                    -escalar*PuntosU.get(1)+baseY);
+                         
+            drawLine1 = new Line2D.Double(escalar*PuntosU.get(0)+baseX-5,
+                    -escalar*PuntosU.get(1)+baseY,escalar*PuntosU.get(0)+baseX,
+                    -escalar*PuntosU.get(1)+baseY+5);
+                                                                
+            drawLine2 = new Line2D.Double(escalar*PuntosU.get(0)+baseX+5,
+                    -escalar*PuntosU.get(1)+baseY,escalar*PuntosU.get(0)+baseX,
+                    -escalar*PuntosU.get(1)+baseY+5);
+            
+            graph2.draw(drawLine);
+            graph2.draw(drawLine1);
+            graph2.draw(drawLine2);
+            
+            //Flecha Linea eje X
+            drawLine  = new Line2D.Double(escalar*PuntosV.get(0)+baseX-5,
+                    -escalar*PuntosV.get(1)+baseY,escalar*PuntosV.get(0)+baseX+5,
+                    -escalar*PuntosV.get(1)+baseY);
+                         
+            drawLine1 = new Line2D.Double(escalar*PuntosV.get(0)+baseX-5,
+                    -escalar*PuntosV.get(1)+baseY,escalar*PuntosV.get(0)+baseX,
+                    -escalar*PuntosV.get(1)+baseY+5);
+                                                                
+            drawLine2 = new Line2D.Double(escalar*PuntosV.get(0)+baseX+5,
+                    -escalar*PuntosV.get(1)+baseY,escalar*PuntosV.get(0)+baseX,
+                    -escalar*PuntosV.get(1)+baseY+5);
+            
+            graph2.draw(drawLine);
+            graph2.draw(drawLine1);
+            graph2.draw(drawLine2);
+            }
             if (dibujaRectangulo){
                 
             drawLine  = new Line2D.Double((escalar*0.5)*PuntoX.get(0)+baseX,-(escalar*0.5)*PuntoX.get(1)+baseY,
@@ -122,6 +169,10 @@ public class Dibujar extends JComponent{
         
         public void setDibujaRectagulo(boolean dibujaRectangulo){
             this.dibujaRectangulo = dibujaRectangulo;
+        }
+        
+        public void setDibujaFlechas(boolean flechas){
+            this.flechas = flechas;
         }
 }
 
