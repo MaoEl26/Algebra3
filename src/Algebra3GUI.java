@@ -23,9 +23,15 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private ArrayList<Double> baseW;
     
     private ArrayList<Double> baseP;
+    private ArrayList<Double> basePunto;
+    private ArrayList<Double> Punto;
     private ArrayList<Double> PuntoX;
     private ArrayList<Double> PuntoY;
     private ArrayList<Double> PuntoZ;
+    private ArrayList<Double> BasePuntoX;
+    private ArrayList<Double> BasePuntoY;
+    private ArrayList<Double> BasePuntoZ;
+    
     
     //Arreglos para la base gris y puntos en R2 
     private ArrayList<Double> baseX;
@@ -36,7 +42,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private ArrayList<Double> PuntosZ;
     
     //Valor para el uso del angulo
-    int valorAngulo=0;
+    private int valorAngulo=0;
+    private double valorDeterminante;
+    private String texto;
     
     //Objetos para el dibujo de las lineas de los vectores
     private Dibujar dibujoBaseGris;
@@ -64,6 +72,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         NombreLabel = new javax.swing.JLabel();
         NombreLabel2 = new javax.swing.JLabel();
         VisualizacionArea = new javax.swing.JPanel();
+        LabelCoordenadas = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -82,7 +91,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         EtiquetaEje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         EtiquetaEje.setText("Rotación Eje Z");
 
-        PuntosPText.setText("(X,Y,Z)");
+        PuntosPText.setText("(1,2,3)");
         PuntosPText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PuntosPTextActionPerformed(evt);
@@ -100,7 +109,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         etiquetaBase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         etiquetaBase.setText("Base B=");
 
-        BasePuntosText.setText("(U;V;W)");
+        BasePuntosText.setText("((1,0,0);(0,1,0);(0,0,1)");
         BasePuntosText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BasePuntosTextActionPerformed(evt);
@@ -139,12 +148,21 @@ public class Algebra3GUI extends javax.swing.JFrame {
         VisualizacionArea.setLayout(VisualizacionAreaLayout);
         VisualizacionAreaLayout.setHorizontalGroup(
             VisualizacionAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 630, Short.MAX_VALUE)
         );
         VisualizacionAreaLayout.setVerticalGroup(
             VisualizacionAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
+            .addGap(0, 390, Short.MAX_VALUE)
         );
+
+        LabelCoordenadas.setFont(new java.awt.Font("Lucida Fax", 3, 14)); // NOI18N
+        LabelCoordenadas.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        LabelCoordenadas.setText("Coordenadas de P en la base = ");
+        LabelCoordenadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LabelCoordenadasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,41 +174,52 @@ public class Algebra3GUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
+                                .addGap(25, 25, 25)
+                                .addComponent(EtiquetaEje, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(CambioPuntosZScroll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(etiquetaBase)
                                     .addComponent(etiquetaP))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(PuntosPText)
-                                    .addComponent(BasePuntosText, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                                    .addComponent(BasePuntosText, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(PuntoPButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                                        .addComponent(NombreLabel))
+                                    .addComponent(PuntoPButton)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(BaseButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(8, 8, 8)))
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(NombreLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(NombreLabel2)
-                                        .addGap(41, 41, 41))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addComponent(EtiquetaEje, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(CambioPuntosZScroll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addGap(41, 41, 41)))))
                         .addGap(33, 33, 33))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(VisualizacionArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(116, 116, 116)
+                .addComponent(LabelCoordenadas, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addGap(26, 26, 26)
+                        .addComponent(NombreLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(NombreLabel2)
+                        .addGap(23, 23, 23))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(etiquetaP, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(PuntosPText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -198,16 +227,13 @@ public class Algebra3GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(etiquetaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BasePuntosText, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                            .addComponent(BaseButton)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(NombreLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(NombreLabel2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(BasePuntosText)
+                            .addComponent(BaseButton))
+                        .addGap(31, 31, 31)))
                 .addComponent(VisualizacionArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LabelCoordenadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(CambioPuntosZScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(EtiquetaEje))
@@ -240,7 +266,8 @@ public class Algebra3GUI extends javax.swing.JFrame {
         dibujoBaseP.Color(Color.BLUE);
         
         //Modifica el largo que debe tener para la correcta visualizacion
-        dibujoBaseVectores.setEscalar(30);
+        dibujoBaseVectores.setEscalar(35);
+        dibujoBaseP.setEscalar(50);
         
         //Inicializa las listas a utilizar para calculos posteriores
         PuntosU = new ArrayList<>();
@@ -257,10 +284,35 @@ public class Algebra3GUI extends javax.swing.JFrame {
         PuntoX = new ArrayList<>();
         PuntoY = new ArrayList<>();
         PuntoZ = new ArrayList<>();
+        BasePuntoX = new ArrayList<>();
+        BasePuntoY = new ArrayList<>();
+        BasePuntoZ = new ArrayList<>();
+        basePunto = new ArrayList<>();
+        Punto = new ArrayList<>();
+        texto = LabelCoordenadas.getText();        
+    }
+    
+    private void limpiarArreglos(){
+        PuntosU.clear();
+        PuntosV.clear();
+        PuntosW.clear();
+        baseU.clear();
+        baseV.clear();
+        baseW.clear();
+        baseX.clear();
+        baseY.clear();
+        baseZ.clear();
+        PuntosVacios.clear();
+        PuntoX.clear();
+        PuntoY.clear();
+        PuntoZ.clear();
+        BasePuntoX.clear();
+        BasePuntoY.clear();
+        BasePuntoZ.clear();
+        basePunto.clear();
     }
     
     private void PuntosCentro(){
-        PuntosVacios.clear();
         PuntosVacios.add(0.0);
         PuntosVacios.add(0.0);
         dibujoBaseVectores.setPuntos(PuntosVacios, PuntosVacios, PuntosVacios);
@@ -296,7 +348,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         dibujoBaseVectores.repaint();
         dibujoBaseP.repaint();
     }
-    
+       
     private ArrayList<Double> Iso(double pPuntoX,double pPuntoY, double pPuntoZ){
         ArrayList<Double> listaPuntos  = new ArrayList<>();
         double valorTemporal;
@@ -319,7 +371,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         return listaPuntos;
     }
     
-    private boolean isLI(ArrayList<Double> pU,ArrayList<Double> pV,ArrayList<Double> pW){
+    private double determinante(ArrayList<Double> pU,ArrayList<Double> pV,ArrayList<Double> pW){
         double valor;
         double x = pU.get(0);
         double y = pU.get(1);
@@ -334,8 +386,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
         valor = (x*(y1*z2-z1*y2))-(x1*(y*z2-z*y2))+(x2*(y*z1-z*y1))-(y*(x1*z2-z1*x2))+
                 (y1*(x*z2-z*x2))-(y2*(x*z1-z*x1))+(z*(x1*y2-y1*x2))-(z1*(x*y2-y*x2))+
                 (z2*(x*y1-y*x1));
-        System.out.println(valor);
-        return valor != 0;
+        return valor;
     }
     
     private void separaVectores(String textoBase[]){
@@ -399,6 +450,47 @@ public class Algebra3GUI extends javax.swing.JFrame {
         baseZ=Iso(baseZ.get(0), baseZ.get(1), baseZ.get(2),angulo);
     }
     
+    private ArrayList<Double> valoresIncognitas(){
+        ArrayList<Double> listaPuntos = new ArrayList<>();
+        double determinanteX = determinante(baseP, baseV, baseW);
+        double determinanteY = determinante(baseU, baseP, baseW);
+        double determinanteZ = determinante(baseU, baseV, baseP);
+        double valorX = determinanteX/valorDeterminante;
+        double valorY = determinanteY/valorDeterminante;
+        double valorZ = determinanteZ/valorDeterminante;
+        listaPuntos.add(valorX);
+        listaPuntos.add(valorY);
+        listaPuntos.add(valorZ);
+        return listaPuntos;
+    }
+    
+    private void puntosParalelogramo(){
+        BasePuntoX.add(basePunto.get(0));
+        BasePuntoX.add(0.0);
+        BasePuntoX.add(0.0);
+        BasePuntoY.add(0.0);
+        BasePuntoY.add(basePunto.get(1));
+        BasePuntoY.add(0.0);
+        BasePuntoZ.add(basePunto.get(0));
+        BasePuntoZ.add(basePunto.get(1));
+        BasePuntoZ.add(0.0);
+    }
+    
+    private void setIsoParalelogramo(){
+        PuntoX = Iso(BasePuntoX.get(0),BasePuntoX.get(1),BasePuntoX.get(2));
+        PuntoY = Iso(BasePuntoY.get(0),BasePuntoY.get(1),BasePuntoY.get(2));
+        PuntoZ = Iso(BasePuntoZ.get(0),BasePuntoZ.get(1),BasePuntoZ.get(2));
+        Punto = Iso(basePunto.get(0),basePunto.get(1),basePunto.get(2));
+    }
+    
+    private void setIsoParalelogramo(double angulo){
+        ArrayList<Double> temporal;
+        BasePuntoX = Iso(BasePuntoX.get(0),BasePuntoX.get(1),BasePuntoX.get(2),angulo);
+        BasePuntoY = Iso(BasePuntoY.get(0),BasePuntoY.get(1),BasePuntoY.get(2),angulo);
+        BasePuntoZ = Iso(BasePuntoZ.get(0),BasePuntoZ.get(1),BasePuntoZ.get(2),angulo);
+        temporal = Iso(basePunto.get(0),basePunto.get(1),basePunto.get(2),angulo);
+        basePunto.set(0, temporal.get(0));
+    }
     
     private void PuntosPTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PuntosPTextActionPerformed
         // TODO add your handling code here:
@@ -411,24 +503,47 @@ public class Algebra3GUI extends javax.swing.JFrame {
 
     private void PuntoPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PuntoPButtonActionPerformed
         // TODO add your handling code here:
-       valoresIniciales();
-       PuntosCentro();
-       cargaInicio();
-       reload();
-       separaP(PuntosPText.getText());
+       limpiarArreglos();//Limpia ArrayList
+       valoresIniciales();//Restablece la posición inicial de la figura gris
+       PuntosCentro();//Establece en 0 los puntos de las bases 
+       cargaInicio();//Carga los elementos del inicio
+       reload();//recarga los dibujos
+       separaP(PuntosPText.getText());//Separa y convierte en digitos los valores P
     }//GEN-LAST:event_PuntoPButtonActionPerformed
 
+
+    
     private void BaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BaseButtonActionPerformed
         // TODO add your handling code here:
+        limpiarArreglos();
         String textoBase[];
-        textoBase = BasePuntosText.getText().split(";");
-        separaVectores(textoBase);
-        if (isLI(baseU,baseV,baseW)){
+        textoBase = BasePuntosText.getText().split(";");//Separa los vectores por el ';'
+        separaVectores(textoBase);//Llama a la función para eliminar caracteres 
+                                  //basura y convertirlos en digitos
+        valorDeterminante = determinante(baseU,baseV,baseW);//Almacena el determinante
+                                                    //de los datos principales
+        //Si es diferente de 0 dibuja todas la graficas
+        if (valorDeterminante !=0){
+            valoresIniciales();
             setValoresISOVectores();
             dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
+            dibujoBaseP.setPuntos(PuntosU, PuntosV, PuntosW);
+            
+            
+            basePunto=valoresIncognitas();
+            puntosParalelogramo();
+            setIsoParalelogramo();
+            dibujoBaseP.setPuntosRectangulo(PuntoX, PuntoY, PuntoZ, Punto);
+            dibujoBaseP.setDibujaRectagulo(true);
+            LabelCoordenadas.setText(texto+basePunto);
             reload();
         }else{
+            //Solo deja la plantilla gris
+            LabelCoordenadas.setText("La Base no es L.I.");
+            limpiarArreglos();
+            valoresIniciales();
             PuntosCentro();
+            dibujoBaseP.setDibujaRectagulo(false);
             reload();
         }
     }//GEN-LAST:event_BaseButtonActionPerformed
@@ -446,8 +561,9 @@ public class Algebra3GUI extends javax.swing.JFrame {
             
             //Genera los valores de la Rotacion
             setVectoresBaseCambioAngulo(valorAngulo);
-            if(baseU.size()==3){
+            if((baseU.size()==3) && (valorDeterminante!=0)){
             setValoresISOVectoresCambioAngulo(valorAngulo);
+            setIsoParalelogramo(valorAngulo);
            }
         }else{
             //Giro en contra del sentido del reloj
@@ -456,23 +572,29 @@ public class Algebra3GUI extends javax.swing.JFrame {
             
             //Genera los valores de la Rotacion
             setVectoresBaseCambioAngulo(-valorAngulo);
-            if(baseU.size()==3){
+            if((baseU.size()==3) && (valorDeterminante!=0)){
             setValoresISOVectoresCambioAngulo(-valorAngulo);
+            setIsoParalelogramo(-valorAngulo);
             }
-        }
+        } 
         
         //Genera los valores de las coordenas X,Y correspondientes
         setVectoresBase();
-        if (baseU.size()==3){
+        if ((baseU.size()==3) && (valorDeterminante!=0)){
         setValoresISOVectores();
-        
+        setIsoParalelogramo();
         //Actualiza los puntos a dibujar
-        
+        dibujoBaseP.setPuntosRectangulo(PuntoX, PuntoY, PuntoZ, Punto);
         dibujoBaseVectores.setPuntos(PuntosU, PuntosV, PuntosW);
+        dibujoBaseP.setPuntos(PuntosU, PuntosV, PuntosW);
         }
         dibujoBaseGris.setPuntos(PuntosX, PuntosY, PuntosZ);
         reload();
     }//GEN-LAST:event_CambioPuntosZScrollAdjustmentValueChanged
+
+    private void LabelCoordenadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LabelCoordenadasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LabelCoordenadasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -514,6 +636,7 @@ public class Algebra3GUI extends javax.swing.JFrame {
     private javax.swing.JTextField BasePuntosText;
     private javax.swing.JScrollBar CambioPuntosZScroll;
     private javax.swing.JLabel EtiquetaEje;
+    private javax.swing.JTextField LabelCoordenadas;
     private javax.swing.JLabel NombreLabel;
     private javax.swing.JLabel NombreLabel2;
     private javax.swing.JButton PuntoPButton;
