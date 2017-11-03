@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class Bareiss extends javax.swing.JFrame {
 
-    private static int sistema[][];
+    private static int[][] arreglo;
     private static int auxiliar[][];
     private static int determinante;
 
@@ -257,23 +257,23 @@ public class Bareiss extends javax.swing.JFrame {
         jLabel27.setText("x5 =");
     }
 
-    public static void metodo(int[][] arr) {
-        sistema = arr;
+    public static void iniciarAlgoritmo(int[][] arr) {
+        arreglo = arr;
         int pivAnt = 1;
         textArea1.setText("");
-        for (int i = 0; i < sistema.length; i++) {
+        for (int i = 0; i < arreglo.length; i++) {
             imprimirMatriz(i);
-            diagonalDeterminante(i);
-            primerCuadrante(i, pivAnt);
-            cuartoCuadrante(i, pivAnt);
+            calcularDiagonalDeterminante(i);
+            calcularPrimerCuadrante(i, pivAnt);
+            calcularCuartoCuadrante(i, pivAnt);
             columnaACeros(i);
-            pivAnt = sistema[i][i];
+            pivAnt = arreglo[i][i];
         }
 
 			// despliega la matriz
-        //for (int i = 0; i < sistema.length; i++)
-        //	System.out.println(Arrays.toString(sistema[i]));
-        encuentraSolucion();
+        //for (int i = 0; i < arreglo.length; i++)
+        //	System.out.println(Arrays.toString(arreglo[i]));
+        mostrarSolucion();
     }
 
     private static void imprimirMatriz(int j) {
@@ -288,56 +288,36 @@ public class Bareiss extends javax.swing.JFrame {
         textArea1.setText(textArea1.getText()+ "\n"+ "\n");
     }
 
-    private static void diagonalDeterminante(int indice) {
+    private static void calcularDiagonalDeterminante(int indice) {
         for (int i = 0; i < indice; i++) {
-            sistema[i][i] = sistema[indice][indice];
-        }
-    }
-
-    private static void primerCuadrante(int indice, int pivAnt) {
-        if (pivAnt==0){
-            pivAnt =1;
-        }
-        for (int i = 0; i < indice; i++) {
-            for (int j = indice + 1; j < sistema[0].length; j++) {
-                sistema[i][j] = (((sistema[i][indice] * sistema[indice][j])- (sistema[indice][indice] * sistema[i][j])) * -1) / pivAnt;
-            }
-        }
-    }
-
-    private static void cuartoCuadrante(int indice, int pivAnt) {
-        for (int i = indice + 1; i < sistema.length; i++) {
-            for (int j = indice + 1; j < sistema[0].length; j++) {
-                sistema[i][j] = ((sistema[indice][indice] * sistema[i][j])
-                        - (sistema[i][indice] * sistema[indice][j])) / pivAnt;
-            }
+            arreglo[i][i] = arreglo[indice][indice];
         }
     }
 
     private static void columnaACeros(int indice) {
-        determinante = sistema[indice][indice];
+        determinante = arreglo[indice][indice];
 
-        for (int i = 0; i < sistema.length; i++) {
-            sistema[i][indice] = 0;
+        for (int i = 0; i < arreglo.length; i++) {
+            arreglo[i][indice] = 0;
         }
 
-        sistema[indice][indice] = determinante;
+        arreglo[indice][indice] = determinante;
     }
 
-    private static void encuentraSolucion() {
+    private static void mostrarSolucion() {
         boolean infinito = false;
         boolean sinSolucion = false;
-        int as[] = new int[sistema.length];
+        int as[] = new int[arreglo.length];
 
-        for (int i = 0; i < sistema.length; i++) {
-            if (sistema[i][i] == 0) {
-                if (sistema[i][sistema[0].length - 1] == 0) {
+        for (int i = 0; i < arreglo.length; i++) {
+            if (arreglo[i][i] == 0) {
+                if (arreglo[i][arreglo[0].length - 1] == 0) {
                     infinito = true;
                 } else {
                     sinSolucion = true;
                 }
             } else {
-                as[i] = sistema[i][sistema[0].length - 1] / sistema[i][i];
+                as[i] = arreglo[i][arreglo[0].length - 1] / arreglo[i][i];
             }
         }
 
@@ -354,7 +334,7 @@ public class Bareiss extends javax.swing.JFrame {
         textArea1.setText(textArea1.getText()+"\n\n"+"EL DETERMINANTE ES: \n" + determinante);
     }
 
-    public static void printArr(int[][] arr) {
+    public static void imprimirArreglo(int[][] arr) {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
                 //jTextField32.setText(jTextField32.getText()+ arr[i][j] + " ");
@@ -365,7 +345,7 @@ public class Bareiss extends javax.swing.JFrame {
         }
     }
 
-    private static int validaDiagonal(int[][] arr) {
+    private static int validarDiagonal(int[][] arr) {
         // TODO verificar que no haya 0 en la diagonal principal
         for (int i = 0; i < arr.length; i++) {
             if (arr[i][i] == 0) {
@@ -375,18 +355,38 @@ public class Bareiss extends javax.swing.JFrame {
         return -1;
     }
 
-    private static void intercambiaRenglones(int[][] arr) {
+    private static void intercambiarFilas(int[][] arr) {
         // TODO intercambia renglones hasta que no hay 0os en la diagonal
         int[] aux = new int[arr.length];
         int problema = -1;//numero del renglon donde hay un 0
         int contador = 0;
-        while (((problema = validaDiagonal(arr)) != -1) && contador < 1000) {
+        while (((problema = validarDiagonal(arr)) != -1) && contador < 1000) {
             for (int i = 0; i < arr.length; i++) {
                 aux = arr[problema];
                 arr[problema] = arr[i];
                 arr[i] = aux;
             }
             contador++;
+        }
+    }
+    
+        private static void calcularPrimerCuadrante(int indice, int pivAnt) {
+        if (pivAnt==0){
+            pivAnt =1;
+        }
+        for (int i = 0; i < indice; i++) {
+            for (int j = indice + 1; j < arreglo[0].length; j++) {
+                arreglo[i][j] = (((arreglo[i][indice] * arreglo[indice][j])- (arreglo[indice][indice] * arreglo[i][j])) * -1) / pivAnt;
+            }
+        }
+    }
+
+    private static void calcularCuartoCuadrante(int indice, int pivoteAnterior) {
+        for (int i = indice + 1; i < arreglo.length; i++) {
+            for (int j = indice + 1; j < arreglo[0].length; j++) {
+                arreglo[i][j] = ((arreglo[indice][indice] * arreglo[i][j])
+                        - (arreglo[i][indice] * arreglo[indice][j])) / pivoteAnterior;
+            }
         }
     }
 
@@ -481,9 +481,9 @@ public class Bareiss extends javax.swing.JFrame {
         }
         auxiliar = matriz;
         //printArr(auxiliar);
-        metodo(matriz);
-        if (validaDiagonal(matriz) != -1) {
-            intercambiaRenglones(matriz);
+        iniciarAlgoritmo(matriz);
+        if (validarDiagonal(matriz) != -1) {
+            intercambiarFilas(matriz);
         }                
         
     }
